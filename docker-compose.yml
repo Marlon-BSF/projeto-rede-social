@@ -1,0 +1,66 @@
+version: '3.9'
+
+services:
+  servidor1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    command: ["python3", "servidor.py", "S1", "8000", "log_servidor_S1.txt"]
+
+  servidor2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    command: ["python3", "servidor.py", "S2", "8001", "log_servidor_S2.txt"]
+
+  servidor3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8002"
+    command: ["python3", "servidor.py", "S3", "8002", "log_servidor_S3.txt"]
+
+  cliente1:
+    build:
+      context: .
+      dockerfile: Dockerfile-node
+    depends_on:
+      - servidor1
+    command: ["node", "cliente.js", "U1", "servidor1", "8000", "log_usuario_U1.txt"]
+
+  cliente2:
+    build:
+      context: .
+      dockerfile: Dockerfile-node
+    depends_on:
+      - servidor1
+    command: ["node", "cliente.js", "U2", "servidor1", "8000", "log_usuario_U2.txt", "U1"]
+
+  cliente3:
+    build:
+      context: .
+      dockerfile: Dockerfile-node
+    depends_on:
+      - servidor1
+    command: ["node", "cliente.js", "U3", "servidor1", "8000", "log_usuario_U3.txt"]
+
+  cliente4:
+    build:
+      context: .
+      dockerfile: Dockerfile-node
+    depends_on:
+      - servidor1
+    command: ["node", "cliente.js", "U4", "servidor1", "8000", "log_usuario_U4.txt"]
+
+  cliente5:
+    build:
+      context: .
+      dockerfile: Dockerfile-node
+    depends_on:
+      - servidor1
+    command: ["node", "cliente.js", "U5", "servidor1", "8000", "log_usuario_U5.txt"]
